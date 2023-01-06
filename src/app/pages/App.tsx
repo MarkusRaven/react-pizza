@@ -1,8 +1,20 @@
+import { useEffect, useState } from 'react'
 import { Categories, Header, PizzaBlock, Sort } from 'common/components'
 
 import 'app/assets/scss/app.scss'
+import { IPizza } from 'common/models/PizzaModel'
 
-function App() {
+const App = () => {
+	const [items, setItems] = useState<IPizza[]>([])
+
+	useEffect(() => {
+		fetch('https://63b7886f4d97e82aa3bf67f7.mockapi.io/items')
+			.then((res) => {
+				return res.json()
+			})
+			.then((data) => setItems(data))
+	}, [])
+
 	return (
 		<div className='wrapper'>
 			<Header />
@@ -14,7 +26,18 @@ function App() {
 					</div>
 					<h2 className='content__title'>Все пиццы</h2>
 					<div className='content__items'>
-						<PizzaBlock title={'Мексиканская'} />
+						{items.map((pizza) => {
+							return (
+								<PizzaBlock
+									key={pizza.id}
+									title={pizza.title}
+									price={pizza.price}
+									imageUrl={pizza.imageUrl}
+									sizes={pizza.sizes}
+									types={pizza.types}
+								/>
+							)
+						})}
 					</div>
 				</div>
 			</div>

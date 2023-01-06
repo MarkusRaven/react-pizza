@@ -1,34 +1,59 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { IPizza } from 'common/models/PizzaModel'
 
-interface IPizzaBlock {
-	title: string
-	description?: string
-	price?: number
-}
+type AllProps = IPizza
 
-export const PizzaBlock: FC<IPizzaBlock> = ({ title, price, description }) => {
+export const PizzaBlock: FC<AllProps> = ({
+	title,
+	price,
+	category,
+	imageUrl,
+	rating,
+	sizes,
+	types,
+}) => {
+	const [activeType, setActiveType] = useState<number>(0)
+	const [activeSize, setActiveSize] = useState<number>(0)
+
+	const typesName = ['тонкое', 'традиционное']
+
+	const onClickType = (index: number) => {
+		setActiveType(index)
+	}
+
+	const onClickSize = (index: number) => {
+		setActiveSize(index)
+	}
+
 	return (
 		<div className='pizza-block'>
-			<img
-				className='pizza-block__image'
-				src='https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg'
-				alt='Pizza'
-			/>
+			<img className='pizza-block__image' src={imageUrl} alt={title} />
 			<h4 className='pizza-block__title'>{title}</h4>
 			<div className='pizza-block__selector'>
 				<ul>
-					<li className='active'>тонкое</li>
-					<li>традиционное</li>
+					{types.map((type) => (
+						<li
+							key={type}
+							onClick={() => onClickType(type)}
+							className={activeType === type ? 'active' : ''}>
+							{typesName[type]}
+						</li>
+					))}
 				</ul>
 				<ul>
-					<li className='active'>26 см.</li>
-					<li>30 см.</li>
-					<li>40 см.</li>
+					{sizes.map((size, index) => (
+						<li
+							key={index}
+							onClick={() => onClickSize(index)}
+							className={activeSize === index ? 'active' : ''}>
+							{size} см.
+						</li>
+					))}
 				</ul>
 			</div>
 			<div className='pizza-block__bottom'>
-				<div className='pizza-block__price'>от 395 ₽</div>
-				<div className='button button--outline button--add'>
+				<div className='pizza-block__price'>от {price} ₽</div>
+				<button className='button button--outline button--add'>
 					<svg
 						width='12'
 						height='12'
@@ -42,7 +67,7 @@ export const PizzaBlock: FC<IPizzaBlock> = ({ title, price, description }) => {
 					</svg>
 					<span>Добавить</span>
 					<i>2</i>
-				</div>
+				</button>
 			</div>
 		</div>
 	)
