@@ -1,14 +1,25 @@
 import { FC, useState } from 'react'
 
-export const Sort: FC = () => {
+export interface ISortType {
+	name: string
+	sortProperty: string
+}
+interface ISortProps {
+	value: ISortType
+	onChangeSort: (value: ISortType) => void
+}
+
+export const Sort: FC<ISortProps> = ({ value, onChangeSort }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
-	const [selectedItem, setSelectedItem] = useState<number>(0)
 
-	const list = ['популярности', 'цене', 'алфавиту']
-	const sortName = list[selectedItem]
+	const list: ISortType[] = [
+		{ name: 'популярности', sortProperty: 'rating' },
+		{ name: 'цене', sortProperty: 'price' },
+		{ name: 'алфавиту', sortProperty: 'title' },
+	]
 
-	const onSetFilter = (index: number) => {
-		setSelectedItem(index)
+	const onSetFilter = (value: ISortType) => {
+		onChangeSort(value)
 		setIsOpen(false)
 	}
 
@@ -27,7 +38,9 @@ export const Sort: FC = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => setIsOpen((val) => !val)}>{sortName}</span>
+				<span onClick={() => setIsOpen((val) => !val)}>
+					{value.name}
+				</span>
 			</div>
 			{isOpen && (
 				<div className='sort__popup'>
@@ -35,11 +48,13 @@ export const Sort: FC = () => {
 						{list.map((item, index) => (
 							<li
 								key={index}
-								onClick={() => onSetFilter(index)}
+								onClick={() => onSetFilter(item)}
 								className={
-									selectedItem === index ? 'active' : ''
+									item.sortProperty === value.sortProperty
+										? 'active'
+										: ''
 								}>
-								{item}
+								{item.name}
 							</li>
 						))}
 					</ul>

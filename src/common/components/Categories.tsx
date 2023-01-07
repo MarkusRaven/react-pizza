@@ -1,8 +1,14 @@
 import { FC, useState } from 'react'
 
-export const Categories: FC = () => {
-	const [activeIndex, setActiveIndex] = useState<number>(0)
+interface ICategoriesProps {
+	value: number
+	onClickCategory: (value: number) => void
+}
 
+export const Categories: FC<ICategoriesProps> = ({
+	value,
+	onClickCategory,
+}) => {
 	const categories = [
 		'Все',
 		'Мясные',
@@ -12,10 +18,6 @@ export const Categories: FC = () => {
 		'Закрытые',
 	]
 
-	const onClickCategory = (index: number) => {
-		setActiveIndex(index)
-	}
-
 	return (
 		<div className='categories'>
 			<ul>
@@ -24,7 +26,7 @@ export const Categories: FC = () => {
 						<li
 							onClick={() => onClickCategory(index)}
 							key={index}
-							className={activeIndex === index ? 'active' : ''}>
+							className={value === index ? 'active' : ''}>
 							{category}
 						</li>
 					)
