@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
 
+import { Search } from 'common/components/Search'
 import logo from 'app/assets/img/pizza-logo.svg'
 
-export const Header: FC = () => {
+export const Header: FC<any> = (props: any) => {
 	return (
 		<div className='header'>
 			<div className='container'>
@@ -16,6 +17,10 @@ export const Header: FC = () => {
 						</div>
 					</div>
 				</Link>
+				<Search
+					searchValue={props.searchValue}
+					setSearchValue={props.setSearchValue}
+				/>
 				<div className='header__cart'>
 					<Link to='/cart' className='button button--cart'>
 						<span>520 ₽</span>

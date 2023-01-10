@@ -1,6 +1,6 @@
 import { FC } from 'react'
 
-import styles from './NotFoundBlock.module.scss'
+import styles from 'common/components/NotFoundBlock/NotFoundBlock.module.scss'
 
 export const NotFoundBlock: FC = () => {
 	return (
